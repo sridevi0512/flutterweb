@@ -1,18 +1,14 @@
 
 import 'dart:ui';
-import 'dart:js';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterweb/responsiveWidget.dart';
 import 'package:flutterweb/screens/loginPage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
 import 'package:flutterweb/utils/constant.dart';
 import 'package:flutterweb/utils/preference.dart';
 import 'package:get/get.dart';
 
-import 'homePage.dart';
 import '../model/appbarmenuItem.dart';
 
 final GlobalKey _menuKey = GlobalKey();
@@ -31,7 +27,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     double top = offset.dy;
     showMenu<String>(
       context: context,
-      position: RelativeRect.fromLTRB(left, top, 20.0, 0.0),      //position where you want to show the menu on screen
+      position: RelativeRect.fromLTRB(left, top, 20.0, 0.0),
       items: [
         PopupMenuItem<String>(
             child: const Text('My Account'), value: '1'),
@@ -48,7 +44,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       if(itemSelected == "1"){
         print("click 1");
       }else if(itemSelected == "2"){
-        print("click 2");
+        Preference.setUserToken(Constants.USER_TOKEN, "");
+        Preference.setUserId(Constants.USER_ID, "");
+        Preference.setExpiredTime(Constants.EXPIRE_TIME, "");
+        Get.toNamed("/login");
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+
       }else{
         //code here
       }
@@ -69,6 +70,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("checkUserToken: ${Preference.getUserToken(Constants.USER_TOKEN)}");
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -137,7 +139,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             },
           ),
           Spacer(),
-          (Preference.getUserToken(Constants.USER_TOKEN) != null)?
+          (Preference.getUserToken(Constants.USER_TOKEN) != "")?
           IconButton(
             onPressed: (){},
             icon: Icon(
@@ -157,7 +159,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             },
           ),
           Spacer(),
-          (Preference.getUserToken(Constants.USER_TOKEN)!= null)?
+          (Preference.getUserToken(Constants.USER_TOKEN)!= "")?
           GestureDetector(
             onTapDown: (TapDownDetails details) {
               _showPopupMenu(details.globalPosition,context);

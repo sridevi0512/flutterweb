@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool _passVisible = false;
-  var id,first_name,last_name,email,phone_number,userToken;
+  var id,first_name,last_name,email,phone_number,userToken,expired_time;
 
   Future<String?> loginUser() async{
     print(ApiUrl.BASE_URL + ApiUrl.LOGIN);
@@ -59,6 +59,7 @@ class _LoginPageState extends State<LoginPage> {
           gravity: ToastGravity.BOTTOM
         );
         userToken = data['user_token'];
+        expired_time = data['expiry_time'].toString();
         id = data['details']['id'].toString();
         first_name = data['details']['first_name'];
         last_name = data['details']['last_name'];
@@ -68,7 +69,8 @@ class _LoginPageState extends State<LoginPage> {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString("user_id", id);
         Preference.setUserId(Constants.USER_ID, id);
-        Preference.setUserToken(userToken, userToken);
+        Preference.setUserToken(Constants.USER_TOKEN, data['user_token']);
+        Preference.setExpiredTime(Constants.EXPIRE_TIME, expired_time);
         Get.toNamed("/home");
         Navigator.push(context,
         MaterialPageRoute(builder: (context) => HomePage()));
