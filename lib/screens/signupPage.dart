@@ -56,7 +56,6 @@ class _SignUpPageState extends State<SignUpPage> {
         Fluttertoast.showToast(
             msg: data['message'],
             toastLength: Toast.LENGTH_SHORT,
-            timeInSecForIosWeb: 30,
             gravity: ToastGravity.BOTTOM);
         Navigator.push(
             context,
@@ -74,7 +73,6 @@ class _SignUpPageState extends State<SignUpPage> {
       Fluttertoast.showToast(
           msg: 'The server is temporary unable to complete the request',
           toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 30,
           gravity: ToastGravity.BOTTOM);
     }
   }

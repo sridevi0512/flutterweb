@@ -54,7 +54,7 @@ class _IntroPageState extends State<IntroPage> {
                             TextSpan(
                               text: "Your",
                               style: GoogleFonts.poppins(
-                                  textStyle: Theme.of(context).textTheme.headline4,
+                                  textStyle: Theme.of(context).textTheme.headline1,
                                   color: Color(0xff2b2b35),
                                   fontWeight: FontWeight.w700
                               ),

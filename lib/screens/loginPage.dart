@@ -1,9 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutterweb/screens/homePage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
+import 'package:flutterweb/utils/apiUrl.dart';
+import 'package:flutterweb/utils/constant.dart';
+import 'package:flutterweb/utils/preference.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../responsiveWidget.dart';
 import 'forgotPassPage.dart';
+import 'package:http/http.dart' as http;
 
 
 class LoginPage extends StatefulWidget {
@@ -14,11 +25,69 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _usernameEditingController = new TextEditingController();
+  TextEditingController _emailEditingController = new TextEditingController();
   TextEditingController _passwordEditingController = new TextEditingController();
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool _passVisible = false;
+  var id,first_name,last_name,email,phone_number,userToken;
+
+  Future<String?> loginUser() async{
+    print(ApiUrl.BASE_URL + ApiUrl.LOGIN);
+
+    var body = json.encode({
+        "email": _emailEditingController.text,
+        "password": _passwordEditingController.text
+    });
+
+
+    final response = await http.post(Uri.parse(ApiUrl.BASE_URL + ApiUrl.LOGIN),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+
+        body: body
+    );
+
+    try{
+      var data = jsonDecode(response.body);
+      print(data);
+      if(data['status'] == "true"){
+        Fluttertoast.showToast(
+            msg: data['message'],
+        toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM
+        );
+        userToken = data['user_token'];
+        id = data['details']['id'].toString();
+        first_name = data['details']['first_name'];
+        last_name = data['details']['last_name'];
+        email = data['details']['email'];
+        phone_number = data['details']['phone_number'].toString();
+
+        SharedPreferences pref = await SharedPreferences.getInstance();
+        pref.setString("user_id", id);
+        Preference.setUserId(Constants.USER_ID, id);
+        Preference.setUserToken(userToken, userToken);
+        Get.toNamed("/home");
+        Navigator.push(context,
+        MaterialPageRoute(builder: (context) => HomePage()));
+      } else{
+        Fluttertoast.showToast(
+            msg: data['message'],
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM
+        );
+      }
+    }catch(Exception){
+       print(Exception);
+      Fluttertoast.showToast(
+          msg: 'The server is temporary unable to complete the request',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM);
+    }
+
+  }
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -85,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                             Padding(
                               padding: const EdgeInsets.all(10.0),
                               child: TextFormField(
-                                controller: _usernameEditingController,
+                                controller: _emailEditingController,
                                 autocorrect: false,
                                 enableSuggestions: false,
                                 validator: (value) {
@@ -185,6 +254,7 @@ class _LoginPageState extends State<LoginPage> {
                                 onPressed: (){
                                   if(_key.currentState!.validate()){
                                     print("Validation");
+                                    loginUser();
                                   }
                                 },
                                 child: Text(
