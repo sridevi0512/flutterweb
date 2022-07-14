@@ -30,6 +30,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   bool _passVisible = false;
+  SharedPreferences? prefs;
   var id,first_name,last_name,email,phone_number,userToken,expired_time;
 
   Future<String?> loginUser() async{
@@ -66,11 +67,11 @@ class _LoginPageState extends State<LoginPage> {
         email = data['details']['email'];
         phone_number = data['details']['phone_number'].toString();
 
-        SharedPreferences pref = await SharedPreferences.getInstance();
-        pref.setString("user_id", id);
-        Preference.setUserId(Constants.USER_ID, id);
-        Preference.setUserToken(Constants.USER_TOKEN, data['user_token']);
-        Preference.setExpiredTime(Constants.EXPIRE_TIME, expired_time);
+        prefs = await SharedPreferences.getInstance();
+        prefs!.setString("user_token", data['user_token']);
+        prefs!.setString("user_id", data['details']['id'].toString());
+        prefs!.setString("expiry_time", data['expiry_time'].toString());
+        prefs!.commit();
         Get.toNamed("/home");
         Navigator.push(context,
         MaterialPageRoute(builder: (context) => HomePage()));

@@ -5,16 +5,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterweb/screens/loginPage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
-import 'package:flutterweb/utils/constant.dart';
-import 'package:flutterweb/utils/preference.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/appbarmenuItem.dart';
 
 final GlobalKey _menuKey = GlobalKey();
 
-class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  GlobalKey<State<StatefulWidget>>? dataKey;
+
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget{
+  GlobalKey? dataKey;
   GlobalKey<State<StatefulWidget>>? courseDataKey;
   GlobalKey<State<StatefulWidget>>? benefitDataKey;
   GlobalKey<State<StatefulWidget>>? plansDataKey;
@@ -22,6 +22,25 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   GlobalKey<State<StatefulWidget>>? storyDataKey;
   Size preferredSize;
 
+  CustomAppBar({Key? key,
+    this.dataKey,
+    this.courseDataKey,
+    this.benefitDataKey,
+    this.plansDataKey,
+    this.feedbackDataKey,
+    this.storyDataKey
+  }) :
+        preferredSize = Size.fromHeight(60.0),
+        super(key: key);
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+
+SharedPreferences? prefs;
+var user_token;
   _showPopupMenu(Offset offset,BuildContext context) async {
     double left = offset.dx;
     double top = offset.dy;
@@ -44,9 +63,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       if(itemSelected == "1"){
         print("click 1");
       }else if(itemSelected == "2"){
-        Preference.setUserToken(Constants.USER_TOKEN, "");
-        Preference.setUserId(Constants.USER_ID, "");
-        Preference.setExpiredTime(Constants.EXPIRE_TIME, "");
+        logout();
         Get.toNamed("/login");
         Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
 
@@ -56,149 +73,157 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     });
   }
-
-  CustomAppBar({Key? key,
-    this.dataKey,
-    this.courseDataKey,
-    this.benefitDataKey,
-    this.plansDataKey,
-    this.feedbackDataKey,
-    this.storyDataKey
-  }):
-        preferredSize = Size.fromHeight(60.0),
-        super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    print("checkUserToken: ${Preference.getUserToken(Constants.USER_TOKEN)}");
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(0.0, 1.0),
-            blurRadius: 6.0,
-          ),
-        ],
-      ),
-
-      child: Row(
-        children: [
-
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Image.asset(
-              "assets/images/logo.png",
-              height: 50,
-              width: 200,
-            ),
-          ),
-          Spacer(),
-          AppBarMenuItem(
-            title: "How it works ",
-            press: (){
-              Scrollable.ensureVisible(dataKey!.currentContext!);
-              Get.toNamed("/home");
-
-            },
-          ),
-          Spacer(),
-          AppBarMenuItem(
-            title: "Courses",
-            press: (){
-              Scrollable.ensureVisible(courseDataKey!.currentContext!);
-            },
-          ),
-          Spacer(),
-          AppBarMenuItem(
-            title: "Benefits",
-            press: (){
-              Scrollable.ensureVisible(benefitDataKey!.currentContext!);
-            },
-          ),
-          Spacer(),
-          AppBarMenuItem(
-            title: "Plans",
-            press: (){
-              Scrollable.ensureVisible(plansDataKey!.currentContext!);
-            },
-          ),
-          Spacer(),
-          AppBarMenuItem(
-            title: "Feedback",
-            press: (){
-              Scrollable.ensureVisible(feedbackDataKey!.currentContext!);
-            },
-          ),
-          Spacer(),
-          AppBarMenuItem(
-            title: "Our story",
-            press: (){
-              Scrollable.ensureVisible(storyDataKey!.currentContext!);
-            },
-          ),
-          Spacer(),
-          (Preference.getUserToken(Constants.USER_TOKEN) != "")?
-          IconButton(
-            onPressed: (){},
-            icon: Icon(
-              Icons.notifications_rounded,
-              size: 25,
-            ),
-
-          ):
-          LoginButton(
-            text: "Login",
-            press: (){
-              Get.toNamed("/login");
-              print("****press*****");
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => LoginPage())
-              );
-            },
-          ),
-          Spacer(),
-          (Preference.getUserToken(Constants.USER_TOKEN)!= "")?
-          GestureDetector(
-            onTapDown: (TapDownDetails details) {
-              _showPopupMenu(details.globalPosition,context);
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: CircleAvatar(
-                radius: 30,
-                backgroundImage: AssetImage(
-                  'assets/images/placeholder.png',
-                ),
-                child: const SizedBox.shrink(),
-              ),
-            ),
-          ):
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Signup(
-              text: "SignUp",
-              press: (){
-                Get.toNamed("/signup");
-                print("****press*****");
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SignUpPage())
-                );
-              },
-            ),
-          ),
-          Spacer(),
-
-
-        ],
-      ),
-    );
-
+  logout() async{
+    prefs = await SharedPreferences.getInstance();
+    prefs!.clear();
+  }
+@override
+  void initState() {
+    // TODO: implement initState
+  testing();
+    super.initState();
+  }
+  testing() async {
+    prefs = await SharedPreferences.getInstance();
+    setState(() {
+      user_token = prefs!.getString("user_token");
+      print("checkUserToken: ${prefs!.getString("user_token")}");
+    });
   }
 
 
+
+  @override
+  Widget build(BuildContext context) {
+    return
+      Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: Offset(0.0, 1.0),
+              blurRadius: 6.0,
+            ),
+          ],
+        ),
+
+        child: Row(
+          children: [
+
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                "assets/images/logo.png",
+                height: 50,
+                width: 200,
+              ),
+            ),
+            Spacer(),
+            AppBarMenuItem(
+              title: "How it works ",
+              press: (){
+                Scrollable.ensureVisible(this.widget.dataKey!.currentContext!);
+                Get.toNamed("/home");
+
+              },
+            ),
+            Spacer(),
+            AppBarMenuItem(
+              title: "Courses",
+              press: (){
+                Scrollable.ensureVisible(this.widget.courseDataKey!.currentContext!);
+              },
+            ),
+            Spacer(),
+            AppBarMenuItem(
+              title: "Benefits",
+              press: (){
+                Scrollable.ensureVisible(this.widget.benefitDataKey!.currentContext!);
+              },
+            ),
+            Spacer(),
+            AppBarMenuItem(
+              title: "Plans",
+              press: (){
+                Scrollable.ensureVisible(this.widget.plansDataKey!.currentContext!);
+              },
+            ),
+            Spacer(),
+            AppBarMenuItem(
+              title: "Feedback",
+              press: (){
+                Scrollable.ensureVisible(this.widget.feedbackDataKey!.currentContext!);
+              },
+            ),
+            Spacer(),
+            AppBarMenuItem(
+              title: "Our story",
+              press: (){
+                Scrollable.ensureVisible(this.widget.storyDataKey!.currentContext!);
+              },
+            ),
+            Spacer(),
+            (user_token != null)?
+            IconButton(
+              onPressed: (){},
+              icon: Icon(
+                Icons.notifications_rounded,
+                size: 25,
+              ),
+
+            ):
+            LoginButton(
+              text: "Login",
+              press: (){
+                Get.toNamed("/login");
+                print("****press*****");
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => LoginPage())
+                );
+              },
+            ),
+            Spacer(),
+            (user_token!= null)?
+            GestureDetector(
+              onTapDown: (TapDownDetails details) {
+                _showPopupMenu(details.globalPosition,context);
+              },
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: CircleAvatar(
+                  radius: 30,
+                  backgroundImage: AssetImage(
+                    'assets/images/placeholder.png',
+                  ),
+                  child: const SizedBox.shrink(),
+                ),
+              ),
+            ):
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Signup(
+                text: "SignUp",
+                press: (){
+                  Get.toNamed("/signup");
+                  print("****press*****");
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SignUpPage())
+                  );
+                },
+              ),
+            ),
+            Spacer(),
+
+
+          ],
+        ),
+
+      );
+
+  }
 }
+
 
 class Signup extends StatelessWidget {
   final String? text;

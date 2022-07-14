@@ -12,33 +12,16 @@ import 'package:flutterweb/utils/constant.dart';
 import 'package:flutterweb/utils/preference.dart';
 import 'package:get/get.dart';
 import 'package:responsive_framework/responsive_framework.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 import 'model/route.dart';
-final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() {
   //for removing # from url
   setPathUrlStrategy();
-  // _checkTime();
   runApp(MyApp());
 }
 
-/*void _checkTime() {
-  var _timeNow = DateTime.now().millisecondsSinceEpoch.toString();
-  print(_timeNow);
-  if(Preference.getExpiryTime(Constants.EXPIRE_TIME) != "") {
-    int timingSeconds = int.parse(
-        Preference.getExpiryTime(Constants.EXPIRE_TIME));
-    print("timingSeconds  $timingSeconds");
-    if (int.parse(_timeNow) > timingSeconds) {
-      Preference.setUserToken(Constants.USER_TOKEN, "");
-      Preference.setUserId(Constants.USER_ID, "");
-      Preference.setExpiredTime(Constants.EXPIRE_TIME, "");
-      Get.toNamed("/login");
-    navigatorKey.currentState!.pushNamed('/login');
-    }
-  }
-}*/
 
 class MyApp extends StatelessWidget {
   Widget? view;
@@ -81,7 +64,6 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       initialRoute: '/home',
-      navigatorKey: navigatorKey,
       onGenerateRoute: (RouteSettings settings) {
         return Routes.fadeThrough(settings, (context) {
           switch (settings.name) {

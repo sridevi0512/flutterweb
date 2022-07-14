@@ -18,7 +18,9 @@ class Preference {
 
   static Future<bool> setUserId(String userId, String value) async {
     var prefs = await _instance;
+    prefs.commit();
     return prefs.setString(userId, value);
+
   }
 
   static String getExpiryTime(String expiredToken, [String? defValue]) {
@@ -27,6 +29,7 @@ class Preference {
 
   static Future<bool> setExpiredTime(String expiredTime, String value) async {
     var prefs = await _instance;
+    prefs.commit();
     return prefs.setString(expiredTime, value);
   }
 
@@ -37,6 +40,7 @@ class Preference {
 
   static Future<bool> setUserToken(String userToken, String value) async {
     var prefs = await _instance;
+    prefs.commit();
     return prefs.setString(userToken, value);
   }
 

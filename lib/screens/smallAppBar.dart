@@ -3,6 +3,8 @@ import 'package:flutterweb/screens/loginPage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutterweb/utils/constant.dart';
+import 'package:flutterweb/utils/preference.dart';
 
 class SmallAppBar extends StatefulWidget implements PreferredSizeWidget {
   GlobalKey? dtkey;
@@ -34,6 +36,42 @@ class _SmallAppBarState extends State<SmallAppBar> {
   Color textColor = Color(0xff4F76F6);
   double x = 0.0;
   double y = 0.0;
+
+  _showPopupMenu(Offset offset,BuildContext context) async {
+    double left = offset.dx;
+    double top = offset.dy;
+    showMenu<String>(
+      context: context,
+      position: RelativeRect.fromLTRB(left, top, 20.0, 0.0),
+      items: [
+        PopupMenuItem<String>(
+            child: const Text('My Account'), value: '1'),
+        PopupMenuItem<String>(
+            child: const Text('Logout'), value: '2'),
+
+      ],
+      elevation: 8.0,
+    )
+        .then<void>((String? itemSelected) {
+
+      if (itemSelected == null) return;
+
+      if(itemSelected == "1"){
+        print("click 1");
+      }else if(itemSelected == "2"){
+        Preference.setUserToken(Constants.USER_TOKEN, "");
+        Preference.setUserId(Constants.USER_ID, "");
+        Preference.setExpiredTime(Constants.EXPIRE_TIME, "");
+        Get.toNamed("/login");
+        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
+
+      }else{
+        //code here
+      }
+
+    });
+  }
+
 
   void _updateLocation(PointerEvent details) {
     setState(() {
@@ -82,6 +120,15 @@ class _SmallAppBarState extends State<SmallAppBar> {
           PopupMenuItem<String>(
             child: Row(
               children: [
+                (Preference.getUserToken(Constants.USER_TOKEN) != "")?
+                IconButton(
+                  onPressed: (){},
+                  icon: Icon(
+                    Icons.notifications_rounded,
+                    size: 25,
+                  ),
+
+                ):
                 MouseRegion(
                   onHover: _updateLocation,
                   onExit: _incrementExit,
@@ -107,6 +154,22 @@ class _SmallAppBarState extends State<SmallAppBar> {
                   ),
                 ),
                 SizedBox(width: 10),
+                (Preference.getUserToken(Constants.USER_TOKEN)!= "")?
+                GestureDetector(
+                  onTapDown: (TapDownDetails details) {
+                    _showPopupMenu(details.globalPosition,context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundImage: AssetImage(
+                        'assets/images/placeholder.png',
+                      ),
+                      child: const SizedBox.shrink(),
+                    ),
+                  ),
+                ):
                 ElevatedButton(
                   onPressed: (){
                     Navigator.of(context).push(
