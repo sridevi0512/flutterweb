@@ -3,75 +3,29 @@ import 'package:flutterweb/screens/loginPage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:flutterweb/utils/constant.dart';
-import 'package:flutterweb/utils/preference.dart';
 
-class SmallAppBar extends StatefulWidget implements PreferredSizeWidget {
-  GlobalKey? dtkey;
-  GlobalKey<State<StatefulWidget>>? courseDataKey;
-  GlobalKey<State<StatefulWidget>>? benefitDataKey;
-  GlobalKey<State<StatefulWidget>>? plansDataKey;
-  GlobalKey<State<StatefulWidget>>? feedbackDataKey;
-  GlobalKey<State<StatefulWidget>>? storyDataKey;
+import '../screens/homePage.dart';
+
+class SmallAppBarAllPage extends StatefulWidget implements PreferredSizeWidget {
+
   Size preferredSize;
 
-  SmallAppBar({Key? key,
-     this.dtkey,
-     this.courseDataKey,
-     this.benefitDataKey,
-     this.plansDataKey,
-     this.feedbackDataKey,
-     this.storyDataKey
+  SmallAppBarAllPage({Key? key,
+
   }) :
         preferredSize = Size.fromHeight(60.0),
         super(key: key);
 
   @override
-  State<SmallAppBar> createState() => _SmallAppBarState();
+  State<SmallAppBarAllPage> createState() => _SmallAppBarAllPageState();
 }
 
-class _SmallAppBarState extends State<SmallAppBar> {
+class _SmallAppBarAllPageState extends State<SmallAppBarAllPage> {
   int valueHolder = 10;
   Color bgColor = Colors.white;
   Color textColor = Color(0xff4F76F6);
   double x = 0.0;
   double y = 0.0;
-
-  _showPopupMenu(Offset offset,BuildContext context) async {
-    double left = offset.dx;
-    double top = offset.dy;
-    showMenu<String>(
-      context: context,
-      position: RelativeRect.fromLTRB(left, top, 20.0, 0.0),
-      items: [
-        PopupMenuItem<String>(
-            child: const Text('My Account'), value: '1'),
-        PopupMenuItem<String>(
-            child: const Text('Logout'), value: '2'),
-
-      ],
-      elevation: 8.0,
-    )
-        .then<void>((String? itemSelected) {
-
-      if (itemSelected == null) return;
-
-      if(itemSelected == "1"){
-        print("click 1");
-      }else if(itemSelected == "2"){
-        Preference.setUserToken(Constants.USER_TOKEN, "");
-        Preference.setUserId(Constants.USER_ID, "");
-        Preference.setExpiredTime(Constants.EXPIRE_TIME, "");
-        Get.toNamed("/login");
-        Navigator.push(context, MaterialPageRoute(builder: (context) => LoginPage()));
-
-      }else{
-        //code here
-      }
-
-    });
-  }
-
 
   void _updateLocation(PointerEvent details) {
     setState(() {
@@ -120,15 +74,6 @@ class _SmallAppBarState extends State<SmallAppBar> {
           PopupMenuItem<String>(
             child: Row(
               children: [
-                (Preference.getUserToken(Constants.USER_TOKEN) != "")?
-                IconButton(
-                  onPressed: (){},
-                  icon: Icon(
-                    Icons.notifications_rounded,
-                    size: 25,
-                  ),
-
-                ):
                 MouseRegion(
                   onHover: _updateLocation,
                   onExit: _incrementExit,
@@ -154,22 +99,6 @@ class _SmallAppBarState extends State<SmallAppBar> {
                   ),
                 ),
                 SizedBox(width: 10),
-                (Preference.getUserToken(Constants.USER_TOKEN)!= "")?
-                GestureDetector(
-                  onTapDown: (TapDownDetails details) {
-                    _showPopupMenu(details.globalPosition,context);
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: CircleAvatar(
-                      radius: 30,
-                      backgroundImage: AssetImage(
-                        'assets/images/placeholder.png',
-                      ),
-                      child: const SizedBox.shrink(),
-                    ),
-                  ),
-                ):
                 ElevatedButton(
                   onPressed: (){
                     Navigator.of(context).push(
@@ -201,21 +130,20 @@ class _SmallAppBarState extends State<SmallAppBar> {
 
       if(itemSelected == "1"){
         Get.toNamed("/home");
-        Scrollable.ensureVisible(this.widget.dtkey!.currentContext!);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+
       }else if(itemSelected == "2"){
         Get.toNamed("/home");
-        Scrollable.ensureVisible(this.widget.courseDataKey!.currentContext!);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+
       }else if(itemSelected == "3"){
-        Scrollable.ensureVisible(this.widget.benefitDataKey!.currentContext!);
-
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
       } else if(itemSelected == "4"){
-        Scrollable.ensureVisible(this.widget.plansDataKey!.currentContext!);
-
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
       }else if(itemSelected == "5"){
-        Scrollable.ensureVisible(this.widget.feedbackDataKey!.currentContext!);
-
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
       }else if(itemSelected == "6"){
-        Scrollable.ensureVisible(this.widget.storyDataKey!.currentContext!);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
       }
 
     });
@@ -225,23 +153,17 @@ class _SmallAppBarState extends State<SmallAppBar> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey,
-            offset: Offset(0.0, 1.0),
-            blurRadius: 6.0,
-          ),
-        ],
+        color: Color(0xff2b2b35),
       ),
       child: Row(
         children: [
           Padding(
             padding: const EdgeInsets.all(10),
             child: Image.asset(
-              "assets/images/logo.png",
-              height: 50,
+              "assets/images/footer-logo.png",
               width: 200,
+              height: 34,
+              fit: BoxFit.cover,
             ),
           ),
           Spacer(),

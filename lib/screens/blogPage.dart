@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutterweb/responsiveWidget.dart';
-import 'package:flutterweb/screens/appbarAllPage.dart';
+import 'package:flutterweb/appBarPages/appbarAllPage.dart';
 import 'package:flutterweb/blog/blogModelPage1.dart';
 import 'package:flutterweb/blog/blogModelPage4.dart';
 import 'package:flutterweb/blog/blogModelPage5.dart';
 import 'package:flutterweb/blog/blogModelPage7.dart';
 import 'package:flutterweb/screens/footorPage.dart';
-import 'package:flutterweb/screens/smallAppbarAllPage.dart';
+import 'package:flutterweb/appBarPages/smallAppbarAllPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../blog/blogModelPage2.dart';

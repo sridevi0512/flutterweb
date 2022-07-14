@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterweb/screens/loginPage.dart';
+import 'package:flutterweb/screens/profilePage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,8 +40,8 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget{
 
 class _CustomAppBarState extends State<CustomAppBar> {
 
-SharedPreferences? prefs;
-var user_token;
+  SharedPreferences? prefs;
+  var user_token;
   _showPopupMenu(Offset offset,BuildContext context) async {
     double left = offset.dx;
     double top = offset.dy;
@@ -61,7 +62,8 @@ var user_token;
       if (itemSelected == null) return;
 
       if(itemSelected == "1"){
-        print("click 1");
+        Get.toNamed("/profile");
+        Navigator.push(context, MaterialPageRoute(builder: (context) =>ProfilePage()));
       }else if(itemSelected == "2"){
         logout();
         Get.toNamed("/login");
@@ -77,13 +79,15 @@ var user_token;
     prefs = await SharedPreferences.getInstance();
     prefs!.clear();
   }
-@override
+  @override
   void initState() {
     // TODO: implement initState
-  testing();
+    getToken();
     super.initState();
   }
-  testing() async {
+
+
+  getToken() async {
     prefs = await SharedPreferences.getInstance();
     setState(() {
       user_token = prefs!.getString("user_token");
@@ -365,22 +369,6 @@ class MenuItems {
     );
   }
 
-  static onChanged( MenuItem item) {
-    switch (item) {
-      case MenuItems.home:
-      //Do something
-        break;
-      case MenuItems.settings:
-      //Do something
-        break;
-      case MenuItems.share:
-      //Do something
-        break;
-      case MenuItems.logout:
-      //Do something
-        break;
-    }
-  }
 }
 
 

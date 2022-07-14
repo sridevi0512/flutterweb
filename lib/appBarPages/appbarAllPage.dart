@@ -8,7 +8,7 @@ import 'package:flutterweb/screens/loginPage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
 import 'package:get/get.dart';
 
-import 'homePage.dart';
+import '../screens/homePage.dart';
 import '../model/appbarmenuItem.dart';
 
 class AppBarAllPages extends StatelessWidget implements PreferredSizeWidget {

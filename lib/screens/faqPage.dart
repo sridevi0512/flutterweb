@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterweb/responsiveWidget.dart';
-import 'package:flutterweb/screens/appbarAllPage.dart';
+import 'package:flutterweb/appBarPages/appbarAllPage.dart';
 import 'package:flutterweb/faq/faqArray1.dart';
 import 'package:flutterweb/faq/faqArray3.dart';
 import 'package:flutterweb/faq/faqArray4.dart';
 import 'package:flutterweb/faq/faqArray6.dart';
 import 'package:flutterweb/screens/footorPage.dart';
-import 'package:flutterweb/screens/smallAppbarAllPage.dart';
+import 'package:flutterweb/appBarPages/smallAppbarAllPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../faq/faqArray2.dart';

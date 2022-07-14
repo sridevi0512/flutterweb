@@ -1,9 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterweb/responsiveWidget.dart';
-import 'package:flutterweb/screens/appbarAllPage.dart';
+import 'package:flutterweb/appBarPages/appbarAllPage.dart';
 import 'package:flutterweb/screens/footorPage.dart';
-import 'package:flutterweb/screens/smallAppbarAllPage.dart';
+import 'package:flutterweb/appBarPages/smallAppbarAllPage.dart';
 import 'package:flutterweb/screens/unOrderedList.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';

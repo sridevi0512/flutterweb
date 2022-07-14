@@ -6,6 +6,7 @@ import 'package:flutterweb/screens/homePage.dart';
 import 'package:flutterweb/screens/how_its_workpage.dart';
 import 'package:flutterweb/screens/investPage.dart';
 import 'package:flutterweb/screens/loginPage.dart';
+import 'package:flutterweb/screens/profilePage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
 import 'package:flutterweb/screens/terms&condPage.dart';
 import 'package:flutterweb/utils/constant.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       'about' : AboutPage(),
       'blog' : BlogPage(),
       'faq' : FAQPage(),
+      'profile' : ProfilePage(),
       'termspolicy': TermsConditionsPage(),
       'investhypnoseed' : InvestHypnoseedPage(),
       'signup' : SignUpPage(),
@@ -99,6 +101,7 @@ class MasterPage extends StatelessWidget {
       'faq' : FAQPage(),
       'signup' : SignUpPage(),
       'login' : LoginPage(),
+      'profile' : ProfilePage()
     };
     view = InnerRoutes[Get.parameters['page_name']];
   }

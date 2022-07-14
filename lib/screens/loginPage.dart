@@ -5,16 +5,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutterweb/screens/homePage.dart';
 import 'package:flutterweb/screens/signupPage.dart';
 import 'package:flutterweb/utils/apiUrl.dart';
-import 'package:flutterweb/utils/constant.dart';
-import 'package:flutterweb/utils/preference.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../responsiveWidget.dart';
 import 'forgotPassPage.dart';
-import 'package:http/http.dart' as http;
 
 
 class LoginPage extends StatefulWidget {
@@ -37,8 +35,8 @@ class _LoginPageState extends State<LoginPage> {
     print(ApiUrl.BASE_URL + ApiUrl.LOGIN);
 
     var body = json.encode({
-        "email": _emailEditingController.text,
-        "password": _passwordEditingController.text
+      "email": _emailEditingController.text,
+      "password": _passwordEditingController.text
     });
 
 
@@ -56,8 +54,8 @@ class _LoginPageState extends State<LoginPage> {
       if(data['status'] == "true"){
         Fluttertoast.showToast(
             msg: data['message'],
-        toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM
         );
         userToken = data['user_token'];
         expired_time = data['expiry_time'].toString();
@@ -74,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
         prefs!.commit();
         Get.toNamed("/home");
         Navigator.push(context,
-        MaterialPageRoute(builder: (context) => HomePage()));
+            MaterialPageRoute(builder: (context) => HomePage()));
       } else{
         Fluttertoast.showToast(
             msg: data['message'],
@@ -83,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
         );
       }
     }catch(Exception){
-       print(Exception);
+      print(Exception);
       Fluttertoast.showToast(
           msg: 'The server is temporary unable to complete the request',
           toastLength: Toast.LENGTH_SHORT,
@@ -115,9 +113,9 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text(
                         "Log in",
                         style: GoogleFonts.poppins(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white
                         ),
                       ),
                     )
@@ -279,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
                                 child: Text(
                                   "Forgot your password?",
                                   style: GoogleFonts.poppins(
-                                    color: Color(0xff5e72e4)
+                                      color: Color(0xff5e72e4)
                                   ),
                                 ),
                               ),

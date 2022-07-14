@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutterweb/model/aboutYearPage.dart';
 import 'package:flutterweb/model/sizeconfig.dart';
 import 'package:flutterweb/responsiveWidget.dart';
-import 'package:flutterweb/screens/appbarAllPage.dart';
-import 'package:flutterweb/screens/customerAppBar.dart';
+import 'package:flutterweb/appBarPages/appbarAllPage.dart';
+import 'package:flutterweb/appBarPages/customerAppBar.dart';
 import 'package:flutterweb/screens/footorPage.dart';
-import 'package:flutterweb/screens/smallAppBar.dart';
-import 'package:flutterweb/screens/smallAppbarAllPage.dart';
+import 'package:flutterweb/appBarPages/smallAppBar.dart';
+import 'package:flutterweb/appBarPages/smallAppbarAllPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../model/customTabView.dart';
