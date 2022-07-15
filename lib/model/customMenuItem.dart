@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 class CustomMenuItem extends StatelessWidget {
   final String? title;
   final Function? press;
@@ -16,13 +17,14 @@ class CustomMenuItem extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: 30),
         child: Text(
           title!,
-          style: TextStyle(
+          style: GoogleFonts.poppins(
               color: Colors.white,
-              fontSize: 15,
+              fontSize: 20,
               fontWeight: FontWeight.w500
           ),
         ),
       ),
+
     );
   }
 }
